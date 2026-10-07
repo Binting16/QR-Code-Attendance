@@ -1,6 +1,6 @@
 # QR Code Attendance
 
-A QR-code attendance scanner and roster manager that runs as a website or a desktop-friendly page — with **no backend server required**. Everything is scanned, logged, and exported straight from the browser, and all data stays on the device it's used on, unless you opt in to live Google Sheets sync.
+A QR-code attendance scanner and roster manager that runs as a website — with **no backend server required**. Everything is scanned, logged, and exported straight from the browser, and all data stays on the device it's used on, unless you opt in to live Google Sheets sync.
 
 Built for schools/orgs that need to track attendance across multiple sections, classes, or teams at once — including with several people scanning simultaneously into a shared file.
 
@@ -23,9 +23,10 @@ Built for schools/orgs that need to track attendance across multiple sections, c
 - Groups appear as tabs above the table; delete one with the **×** on its tab.
 - **Scanning auto-detects the right group** — searches every group for the ID and switches the visible tab to match, no manual switching needed.
 - Unrecognized IDs prompt you to add the student and pick (or create on the spot) a group.
+- **Global search** — searching isn't limited to whichever group's tab is open. If a match turns up in a *different* group, it shows up in an "Also found in other groups" list right under the search box; tap it to jump straight there with the search still applied.
 
 ### ☁️ Google Sheets sync (optional, for multiple people scanning at once)
-- Connect the app to a shared Google Sheet via a small relay script (Apps Script) you deploy once — nobody scanning needs a Google account or to sign in. Full setup steps are built right into the app (Settings → the "How do I get this URL?" guide), no separate document needed.
+- Connect the app to a shared Google Sheet via a small relay script (Apps Script) you deploy once — nobody scanning needs a Google account or to sign in. Full setup steps, including the complete script to copy, are built right into the app (Settings → the "How do I get this URL?" guide) — no separate document needed.
 - Every worksheet tab in that Sheet becomes a group, exactly like a multi-tab import — and it works both ways: scans write straight back into the real Sheet.
 - Cells in the live Sheet are color-coded to match the local Excel export (emerald headers, green Time In / red Time Out) the moment they're written.
 - **Scanning works with no group restriction by default** — auto-detects across every connected group, syncing correctly regardless. An explicit, off-by-default checkbox lets you *optionally* restrict one device to a single group, for cases with several people scanning into the same sheet at once and wanting to split the load.
@@ -37,18 +38,19 @@ Built for schools/orgs that need to track attendance across multiple sections, c
 ### 🕐 Time tracking
 - Time In / Time Out toggle — pick which one the next scan records.
 - AM / PM session toggle — separate columns with their own Time In/Out for morning vs. afternoon.
+- **Only the column you actually use gets created.** Logging just a Time In for a session doesn't pre-create an empty Time Out column (or vice versa) — the second column only appears once you actually log that mode too. Applies to the table, the Excel export, and the live Google Sheet alike.
 - Manually add/rename/delete students, or delete a whole date column.
 - **Click any filled time cell to clear it** — with a confirmation popup showing exactly what's being removed, synced to Google Sheets automatically if that group is connected.
+- **Per-student Absent counter** — a dedicated column counts how many time cells are still empty for that student, flagged visibly once it's above zero. Updates live as you scan, and is included in the Excel export too.
 
 ### 📤 Exporting
-- Excel (.xlsx) export — one workbook, one tab per group, color-coded Time In/Out cells.
+- Excel (.xlsx) export — one workbook, one tab per group, color-coded Time In/Out cells, plus the Absent count per student.
 - **Per-date event title row** — each date's own columns are labeled with whatever "Export file name" was active when that date was recorded, so a sheet spanning multiple events shows the right name over each one.
 
 ### 🎨 Display & customization
 - Custom app name, editable from Settings (updates the header live).
 - Name/Student ID column width presets (Compact/Normal/Wide) — free up space for date columns; long names truncate with a hover tooltip showing the full text.
 - Emerald green theme throughout the UI and exported Excel headers, plus a small credit line under the app title.
-- Search box to filter the table by name or ID.
 
 ### 💻 Layout
 - **Session** sits in its own row across the top; **Scanner** and **Attendance Log** sit side by side below it, with the log getting the larger share of the screen so the camera preview is never squeezed to make room for the table.
@@ -62,6 +64,8 @@ Built for schools/orgs that need to track attendance across multiple sections, c
 ---
 
 ## How to use it
+
+[![Watch the video](https://img.youtube.com/vi/e8GSEoz8zQw/0.jpg)](https://youtu.be/e8GSEoz8zQw)
 
 ### 1. Import your first group
 Tap **Import**, pick a roster file, and choose its column layout if it's not the default Name/Student Number order.
@@ -78,10 +82,10 @@ In the **Scanner** card, choose which one the next scans should record.
 Tap **Start Scanning** and point the camera at a QR code — or type/scan an ID into the manual entry field. Recognized students get logged instantly, with the matching group tab popping into view automatically. Unrecognized IDs prompt you to add them.
 
 ### 5. (Optional) Connect a shared Google Sheet
-Open **⚙ Settings**, expand **"How do I get this URL?"** under Google Sheets sync, and follow the steps to deploy the relay script. Paste the resulting URL and tap **Connect** — every tab in that Sheet becomes a group here.
+Open **⚙ Settings**, expand **"How do I get this URL?"** under Google Sheets sync, and follow the steps to deploy the relay script (the full code is right there to copy). Paste the resulting URL and tap **Connect** — every tab in that Sheet becomes a group here.
 
 ### 6. Check the log
-The **Attendance Log** table shows Name, Student ID, and one In/Out pair per date column. Search to jump to a specific student, tap a filled time cell to clear a mistake, or use the ✎ / 🗑 icons to manage entries.
+The **Attendance Log** table shows Name, Student ID, one In/Out pair per date column actually in use, and an **Absent** count per student. Search to jump to a specific student — matches from other groups show up separately and are one tap away. Tap any filled time cell to clear a mistake, or use the ✎ / 🗑 icons to manage entries.
 
 ### 7. Export
 Tap **Excel** — one file, one tab per group, ready to send as-is.
